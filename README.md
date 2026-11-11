@@ -4,49 +4,61 @@ The agent skills I use regularly.
 
 ## general
 
-- [code-audit](skills/general/code-audit/SKILL.md): phased, read-only audit of a whole repo, written to `.audit/`.
-- [audit-checklist](skills/general/audit-checklist/SKILL.md): turns an audit report into checklists and implements the items you pick.
-- [elixir-cleanup-pass](skills/general/elixir-cleanup-pass/SKILL.md): re-reads recently changed Elixir/Phoenix code and simplifies it without changing behavior; JSON shapes, PubSub topics and stored strings are treated as contracts.
-- [memory-audit](skills/general/memory-audit/SKILL.md): audits and consolidates agent memory and CLAUDE.md files, checking each entry against code and git.
-- [pushpr](skills/general/pushpr/SKILL.md): drafts a pull request (C4 **Problem** / **Solution** body), waits for approval, then pushes to the personal fork and opens the PR upstream. Invoked by hand (`/pushpr`).
-- [python-check-docstrings-and-comments](skills/general/python-check-docstrings-and-comments/SKILL.md): checks that docstrings match the code (with a script for parameters and returns), that inline comments are useful, and rewrites both in ASD-STE100 Simplified Technical English.
-- [python-check-tests](skills/general/python-check-tests/SKILL.md): for one Python file, measures branch coverage, maps behaviors to assertions, and lists missing, useless and over-zealous tests.
-- [rust-cleanup-pass](skills/general/rust-cleanup-pass/SKILL.md): re-reads recently changed Rust code and simplifies it without changing behavior; Tauri commands, serde names and events are treated as contracts.
-- [sentry-triage](skills/general/sentry-triage/SKILL.md): takes a Sentry issue from stacktrace to root cause, minimal fix and regression test, then stops before committing (written for zou).
-- [sentry-weekly](skills/general/sentry-weekly/SKILL.md): read-only analysis of the last 7 days in Sentry against the previous week: volume, top, new and regressed issues, slow transactions, what to triage first.
-- [servant-memory](skills/general/servant-memory/SKILL.md): syncs agent memory, skills and Cursor rules between machines through a Servant server (pull at session start, push after each write).
+| Skill | Purpose |
+|---|---|
+| [audit-checklist](skills/general/audit-checklist/SKILL.md) | Turn an audit report into checklists, fix the picked items |
+| [code-audit](skills/general/code-audit/SKILL.md) | Phased, read-only audit of a whole repo |
+| [elixir-cleanup-pass](skills/general/elixir-cleanup-pass/SKILL.md) | Simplify recent Elixir code, no behavior change |
+| [memory-audit](skills/general/memory-audit/SKILL.md) | Verify and consolidate agent memory and CLAUDE.md |
+| [pushpr](skills/general/pushpr/SKILL.md) | Draft a Problem/Solution PR, push after approval |
+| [python-check-docstrings-and-comments](skills/general/python-check-docstrings-and-comments/SKILL.md) | Docstrings match the code, useful comments, ASD-STE100 |
+| [python-check-tests](skills/general/python-check-tests/SKILL.md) | Coverage, useless and over-zealous tests for one file |
+| [rust-cleanup-pass](skills/general/rust-cleanup-pass/SKILL.md) | Simplify recent Rust code, no behavior change |
+| [sentry-triage](skills/general/sentry-triage/SKILL.md) | Sentry issue to root cause, fix and regression test |
+| [sentry-weekly](skills/general/sentry-weekly/SKILL.md) | Last 7 days of Sentry against the week before |
+| [servant-memory](skills/general/servant-memory/SKILL.md) | Sync memory and skills between machines via Servant |
 
 ## kitsu
 
-- [cleanup-pass](skills/kitsu/cleanup-pass/SKILL.md): re-reads recently changed Kitsu (Vue) code and simplifies it without changing behavior: dead code, house conventions, CSS tokens, i18n; behavior changes are reported, not applied.
-- [contract-audit](skills/kitsu/contract-audit/SKILL.md): checks that kitsu, gazu and the docs only call routes and listen to events that zou really has.
+| Skill | Purpose |
+|---|---|
+| [cleanup-pass](skills/kitsu/cleanup-pass/SKILL.md) | Simplify recent Kitsu (Vue) code, no behavior change |
+| [contract-audit](skills/kitsu/contract-audit/SKILL.md) | Check that kitsu, gazu and docs only use real zou routes and events |
 
 ## kitsu-orchestration
 
-Agents developing software tracked in [Kitsu](https://github.com/cgwire/kitsu) through the kitsu CLI.
+Agents that develop software tracked in [Kitsu](https://github.com/cgwire/kitsu) through the kitsu CLI.
 
-- [kitsu-plan](skills/kitsu-orchestration/kitsu-plan/SKILL.md): scaffolds the board (modules, features, dev-pipeline tasks).
-- [kitsu-work](skills/kitsu-orchestration/kitsu-work/SKILL.md): worker agent: picks up tasks, publishes deliverables for review, loops on retakes.
-- [kitsu-review](skills/kitsu-orchestration/kitsu-review/SKILL.md): independent reviewer agent: posts done or retake verdicts.
-- [kitsu-loop](skills/kitsu-orchestration/kitsu-loop/SKILL.md): follows a project's news feed and acts on each change through kitsu-work.
+| Skill | Purpose |
+|---|---|
+| [kitsu-plan](skills/kitsu-orchestration/kitsu-plan/SKILL.md) | Scaffold the board: modules, features, pipeline tasks |
+| [kitsu-work](skills/kitsu-orchestration/kitsu-work/SKILL.md) | Worker: do tasks, publish for review, loop on retakes |
+| [kitsu-review](skills/kitsu-orchestration/kitsu-review/SKILL.md) | Reviewer: post done or retake verdicts |
+| [kitsu-loop](skills/kitsu-orchestration/kitsu-loop/SKILL.md) | Follow a project's news feed and act on changes |
 
 ## zou
 
-Skills for [zou](https://github.com/cgwire/zou), Kitsu's API. Install them in the zou repo's `.claude/skills/`.
+Skills for [zou](https://github.com/cgwire/zou), Kitsu's API.
 
-- [migration-replay-audit](skills/zou/migration-replay-audit/SKILL.md): replays every migration up, down and up again on a throwaway database, and flags downgrades that do not restore the schema.
-- [new-endpoint](skills/zou/new-endpoint/SKILL.md): new REST endpoint (blueprint, Pydantic schema, tests).
-- [new-model](skills/zou/new-model/SKILL.md): new SQLAlchemy model with migration, CRUD blueprint, routes and tests.
-- [zou-blueprint-cleanup-pass](skills/zou/zou-blueprint-cleanup-pass/SKILL.md): re-reads recently changed blueprints (resources, schemas, routes, OpenAPI) and simplifies them without changing behavior.
-- [zou-service-cleanup-pass](skills/zou/zou-service-cleanup-pass/SKILL.md): same for services: dead code, conventions, cache invalidation, events, N+1 queries.
-- [zou-util-cleanup-pass](skills/zou/zou-util-cleanup-pass/SKILL.md): same for utils: layering, stdlib duplicates, security-sensitive helpers.
+| Skill | Purpose |
+|---|---|
+| [migration-replay-audit](skills/zou/migration-replay-audit/SKILL.md) | Replay migrations up, down, up; flag lying downgrades |
+| [new-endpoint](skills/zou/new-endpoint/SKILL.md) | Scaffold a REST endpoint with schema and tests |
+| [new-model](skills/zou/new-model/SKILL.md) | Scaffold a model, migration, CRUD routes and tests |
+| [zou-blueprint-cleanup-pass](skills/zou/zou-blueprint-cleanup-pass/SKILL.md) | Simplify recent blueprints, no behavior change |
+| [zou-service-cleanup-pass](skills/zou/zou-service-cleanup-pass/SKILL.md) | Simplify recent services, no behavior change |
+| [zou-util-cleanup-pass](skills/zou/zou-util-cleanup-pass/SKILL.md) | Simplify recent utils, no behavior change |
 
 ## gazu
 
-Skills for [gazu](https://github.com/cgwire/gazu), the Python client of Kitsu. Install them in the gazu repo's `.claude/skills/`.
+Skills for [gazu](https://github.com/cgwire/gazu), Kitsu's Python client.
 
-- [gazu-module-cleanup-pass](skills/gazu/gazu-module-cleanup-pass/SKILL.md): re-reads recently changed gazu modules and simplifies them without changing the public API: wrapper conventions, Python 3.7 compatibility, sync/async parity.
+| Skill | Purpose |
+|---|---|
+| [gazu-module-cleanup-pass](skills/gazu/gazu-module-cleanup-pass/SKILL.md) | Simplify recent modules, public API untouched |
 
-Install: copy a skill folder into `~/.claude/skills/` (or a repo's `.claude/skills/`).
+## Install
+
+Copy a skill folder into `~/.claude/skills/`, or into a repo's `.claude/skills/` for the project ones.
 
 MIT licensed.
