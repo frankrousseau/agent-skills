@@ -32,6 +32,15 @@ Skills for [zou](https://github.com/cgwire/zou), Kitsu's API. Install them in th
 - [migration-replay-audit](skills/zou/migration-replay-audit/SKILL.md): replays every migration up, down and up again on a throwaway database, and flags downgrades that do not restore the schema.
 - [new-endpoint](skills/zou/new-endpoint/SKILL.md): new REST endpoint (blueprint, Pydantic schema, tests).
 - [new-model](skills/zou/new-model/SKILL.md): new SQLAlchemy model with migration, CRUD blueprint, routes and tests.
+- [zou-blueprint-cleanup-pass](skills/zou/zou-blueprint-cleanup-pass/SKILL.md): re-reads recently changed blueprints (resources, schemas, routes, OpenAPI) and simplifies them without changing behavior.
+- [zou-service-cleanup-pass](skills/zou/zou-service-cleanup-pass/SKILL.md): same for services: dead code, conventions, cache invalidation, events, N+1 queries.
+- [zou-util-cleanup-pass](skills/zou/zou-util-cleanup-pass/SKILL.md): same for utils: layering, stdlib duplicates, security-sensitive helpers.
+
+## gazu
+
+Skills for [gazu](https://github.com/cgwire/gazu), the Python client of Kitsu. Install them in the gazu repo's `.claude/skills/`.
+
+- [gazu-module-cleanup-pass](skills/gazu/gazu-module-cleanup-pass/SKILL.md): re-reads recently changed gazu modules and simplifies them without changing the public API: wrapper conventions, Python 3.7 compatibility, sync/async parity.
 
 Install: copy a skill folder into `~/.claude/skills/` (or a repo's `.claude/skills/`).
 
