@@ -13,6 +13,7 @@ The agent skills I use regularly.
 
 ## kitsu
 
+- [cleanup-pass](skills/kitsu/cleanup-pass/SKILL.md): re-reads recently changed Kitsu (Vue) code and simplifies it without changing behavior: dead code, house conventions, CSS tokens, i18n; behavior changes are reported, not applied.
 - [contract-audit](skills/kitsu/contract-audit/SKILL.md): checks that kitsu, gazu and the docs only call routes and listen to events that zou really has.
 
 ## kitsu-orchestration
