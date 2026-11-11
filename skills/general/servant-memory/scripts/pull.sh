@@ -1,0 +1,95 @@
+#!/usr/bin/env bash
+# Pulls the memory and skills of the current repo from Servant.
+# Usage: pull.sh [claude|cursor]   (run from the repo root)
+# Needs: SERVANT_URL, SERVANT_TOKEN (scope app:agent_memory:write), curl, jq.
+set -euo pipefail
+
+tool=${1:-claude}
+project=$(basename "$PWD")
+if [[ ! "$project" =~ ^[A-Za-z0-9._-]+$ ]]; then
+  echo "project name \"$project\" is not a valid path segment" >&2
+  exit 1
+fi
+: "${SERVANT_URL:?set SERVANT_URL}" "${SERVANT_TOKEN:?set SERVANT_TOKEN}"
+
+# ponytail: Claude mangles the cwd by swapping "/" for "-"; adjust here if it ever changes.
+claude_memory="$HOME/.claude/projects/$(pwd | tr / -)/memory"
+case "$tool" in
+  claude) skills_dir="$HOME/.claude/skills" ;;
+  cursor) skills_dir="$HOME/.cursor/skills-cursor" ;;
+  *) echo "unknown tool: $tool" >&2; exit 1 ;;
+esac
+
+# Never let a synced file land on top of the scripts themselves.
+script_dir=$(dirname "$(realpath "$0")")
+
+local_path() {
+  case "$1" in
+    memory/*) echo "$claude_memory/${1#memory/*/}" ;;
+    skills/shared/*) echo "$skills_dir/${1#skills/shared/}" ;;
+    skills/claude/*) echo "$HOME/.claude/skills/${1#skills/claude/}" ;;
+    skills/cursor/*) echo "$HOME/.cursor/skills-cursor/${1#skills/cursor/}" ;;
+    rules/*) echo "$PWD/.cursor/rules/${1#rules/*/}" ;;
+  esac
+}
+
+# Only the three known trees, and no "." or ".." segment (path traversal).
+path_ok() {
+  local path="$1" seg
+  [[ "$path" =~ ^(memory|skills|rules)(/[A-Za-z0-9._-]+)+$ ]] || return 1
+  local IFS=/
+  for seg in $path; do
+    [ "$seg" = "." ] && return 1
+    [ "$seg" = ".." ] && return 1
+  done
+  return 0
+}
+
+curl -sSf -H "Authorization: Bearer $SERVANT_TOKEN" \
+  "$SERVANT_URL/api/agent_memory?project=$project&tool=$tool&include=body" |
+  jq -r '.data[] | [.path, .sha256, .updated_at, (.pending // "-"), (.body | @base64)] | @tsv' |
+  while IFS=$'\t' read -r path sha updated pending body64; do
+    if ! path_ok "$path"; then
+      echo "REJECTED  $path" >&2
+      continue
+    fi
+    dest=$(local_path "$path")
+    [ -n "$dest" ] || continue
+    case "$dest" in
+      "$script_dir"/*)
+        echo "SKIPPED  $path  (would overwrite the sync scripts)" >&2
+        continue
+        ;;
+    esac
+    # Servant's curation comes first: a file deleted in the app goes away, a
+    # file edited in the app wins over the local copy whatever its mtime.
+    if [ "$pending" = "deleted" ]; then
+      if [ -f "$dest" ]; then
+        rm "$dest"
+        echo "DELETED      $path  (removed in Servant)"
+      fi
+      continue
+    fi
+    if [ -f "$dest" ] && [ "$(sha256sum "$dest" | cut -c1-64)" = "$sha" ]; then
+      continue
+    fi
+    if [ "$pending" = "modified" ] && [ -f "$dest" ]; then
+      cp "$dest" "$dest.local"
+      printf '%s' "$body64" | base64 -d > "$dest"
+      echo "SERVANT EDIT $path  (edited in Servant, previous local copy kept at $dest.local)"
+      continue
+    fi
+    if [ -f "$dest" ] && [ "$(date -r "$dest" +%s)" -gt "$(date -d "$updated" +%s)" ]; then
+      echo "LOCAL NEWER  $path  (push it, or merge by hand then push)"
+      continue
+    fi
+    mkdir -p "$(dirname "$dest")"
+    if [ -f "$dest" ]; then
+      cp "$dest" "$dest.local"
+      printf '%s' "$body64" | base64 -d > "$dest"
+      echo "MERGE        $path  (previous local copy kept at $dest.local)"
+    else
+      printf '%s' "$body64" | base64 -d > "$dest"
+      echo "pulled       $path"
+    fi
+  done
