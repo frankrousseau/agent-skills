@@ -6,10 +6,12 @@ The agent skills I use regularly.
 
 - [code-audit](skills/general/code-audit/SKILL.md): phased, read-only audit of a whole repo, written to `.audit/`.
 - [audit-checklist](skills/general/audit-checklist/SKILL.md): turns an audit report into checklists and implements the items you pick.
+- [elixir-cleanup-pass](skills/general/elixir-cleanup-pass/SKILL.md): re-reads recently changed Elixir/Phoenix code and simplifies it without changing behavior; JSON shapes, PubSub topics and stored strings are treated as contracts.
 - [memory-audit](skills/general/memory-audit/SKILL.md): audits and consolidates agent memory and CLAUDE.md files, checking each entry against code and git.
 - [pushpr](skills/general/pushpr/SKILL.md): drafts a pull request (C4 **Problem** / **Solution** body), waits for approval, then pushes to the personal fork and opens the PR upstream. Invoked by hand (`/pushpr`).
 - [python-check-docstrings-and-comments](skills/general/python-check-docstrings-and-comments/SKILL.md): checks that docstrings match the code (with a script for parameters and returns), that inline comments are useful, and rewrites both in ASD-STE100 Simplified Technical English.
 - [python-check-tests](skills/general/python-check-tests/SKILL.md): for one Python file, measures branch coverage, maps behaviors to assertions, and lists missing, useless and over-zealous tests.
+- [rust-cleanup-pass](skills/general/rust-cleanup-pass/SKILL.md): re-reads recently changed Rust code and simplifies it without changing behavior; Tauri commands, serde names and events are treated as contracts.
 - [sentry-triage](skills/general/sentry-triage/SKILL.md): takes a Sentry issue from stacktrace to root cause, minimal fix and regression test, then stops before committing (written for zou).
 - [sentry-weekly](skills/general/sentry-weekly/SKILL.md): read-only analysis of the last 7 days in Sentry against the previous week: volume, top, new and regressed issues, slow transactions, what to triage first.
 - [servant-memory](skills/general/servant-memory/SKILL.md): syncs agent memory, skills and Cursor rules between machines through a Servant server (pull at session start, push after each write).
