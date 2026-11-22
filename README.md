@@ -57,6 +57,14 @@ Skills for [gazu](https://github.com/cgwire/gazu), Kitsu's Python client.
 |---|---|
 | [gazu-module-cleanup-pass](skills/gazu/gazu-module-cleanup-pass/SKILL.md) | Simplify recent modules, public API untouched |
 
+## website
+
+Project skills for the Kitsu marketing website (Nuxt 4, Stylus, Bulma).
+
+| Skill | Purpose |
+|---|---|
+| [kitsu-screenshot-svg](skills/website/kitsu-screenshot-svg/SKILL.md) | Turn a Kitsu screenshot into an animated light and dark SVG |
+
 ## Install
 
 Copy a skill folder into `~/.claude/skills/`, or into a repo's `.claude/skills/` for the project ones.
