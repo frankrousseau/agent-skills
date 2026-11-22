@@ -65,6 +65,7 @@ Project skills for the Kitsu marketing website (Nuxt 4, Stylus, Bulma).
 |---|---|
 | [kitsu-screenshot-svg](skills/website/kitsu-screenshot-svg/SKILL.md) | Turn a Kitsu screenshot into an animated light and dark SVG |
 | [css-cleanup-pass](skills/website/css-cleanup-pass/SKILL.md) | Simplify the Stylus styles, no visual change; reorganize on request |
+| [svg-cleanup-pass](skills/website/svg-cleanup-pass/SKILL.md) | Lighten and clean the SVGs, no visual or animation change |
 
 ## Install
 
